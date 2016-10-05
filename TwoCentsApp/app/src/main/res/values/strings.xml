@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">TwoCents</string>
+    <string name="action_me">Me</string>
+    <string name="radius_hint">Radius</string>
 </resources>
