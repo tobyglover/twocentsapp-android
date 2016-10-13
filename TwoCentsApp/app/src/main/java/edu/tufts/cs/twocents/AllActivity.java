@@ -73,7 +73,7 @@ public class AllActivity extends AppCompatActivity {
                 if (result != null) {
                     displayPolls(result);
                 } else {
-                    Log.v("TAG", "JSON Object was NULL");
+                    Log.v(TAG, "JSON Object was NULL");
                 }
             }
         };
