@@ -10,16 +10,22 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 
 public class AllActivity extends AppCompatActivity {
     private static final String TAG = "AllActivity";
 
-    private TextView pollTextView;
+    private ListView pollListView;
+    private ArrayList<Poll> polls;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +34,8 @@ public class AllActivity extends AppCompatActivity {
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
 
-        pollTextView = (TextView) findViewById(R.id.poll_view);
+        polls = new ArrayList<>();
+        pollListView = (ListView) findViewById(R.id.poll_list_view);
         fetchPolls();
     }
 
@@ -73,8 +80,19 @@ public class AllActivity extends AppCompatActivity {
         mr.execute();
     }
 
-    private void displayPolls(JSONObject polls) {
+    private void displayPolls(JSONObject JSONPolls) {
+        try {
+            JSONArray pollArray = JSONPolls.getJSONArray("polls");
+            polls.clear();
+            for (int i = 0; i < pollArray.length(); i++) {
+                polls.add(new Poll(pollArray.getJSONObject(i)));
+            }
+            PollArrayAdapter adapter = new PollArrayAdapter(this, R.id.poll_list_view, polls);
+            pollListView.setAdapter(adapter);
+
+        } catch (JSONException e) {
+            Log.v(TAG, e.getMessage());
+        }
 
     }
-
 }

@@ -20,8 +20,8 @@
         android:elevation="4dp"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
-    <TextView
-        android:id="@+id/poll_view"
+    <ListView
+        android:id="@+id/poll_list_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"></ListView>
 </LinearLayout>
