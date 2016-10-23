@@ -72,6 +72,7 @@ public class AllActivity extends AppCompatActivity {
             protected void onPostExecute(JSONObject result) {
                 if (result != null) {
                     displayPolls(result);
+                    Log.v(TAG, result.toString());
                 } else {
                     Log.v(TAG, "JSON Object was NULL");
                 }

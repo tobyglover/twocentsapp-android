@@ -16,12 +16,17 @@
         android:id="@+id/my_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
+        android:background="@color/colorMenuBarBackground"
         android:elevation="4dp"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
     <ListView
         android:id="@+id/poll_list_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"></ListView>
+        android:layout_height="wrap_content"
+        android:background="@color/colorPollBackground"
+        android:divider="@color/colorPollDivider"
+        android:dividerHeight="4px">
+
+    </ListView>
 </LinearLayout>

@@ -6,34 +6,24 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.util.Date;
+import java.util.TimeZone;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.concurrent.TimeUnit;
+
 /**
  * Created by John on 10/12/16.
  */
 public class Poll {
 
+    private static final String TAG = "Poll";
+
     private String username, pollId, question;
     private JSONObject votes;
-    private Long createdAt;
+    private int numSecondsCreatedAgo;
 
-    public String getUsername() {
-        return username;
-    }
-
-    public String getPollId() {
-        return pollId;
-    }
-
-    public String getQuestion() {
-        return question;
-    }
-
-    public Long getCreatedAt() {
-        return createdAt;
-    }
-
-    public JSONObject getVotes() {
-        return votes;
-    }
 
     public Poll (JSONObject poll) {
 
@@ -47,7 +37,7 @@ public class Poll {
             votes = poll.getJSONObject("votes");
             pollId = poll.getString("pollId");
             question = poll.getString("question");
-            createdAt = new Long(poll.getInt("created"));
+            numSecondsCreatedAgo = poll.getInt("createdAgo");
 
         } catch (JSONException e) {
         }
@@ -58,4 +48,46 @@ public class Poll {
         return "Hello";
     }
 
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPollId() {
+        return pollId;
+    }
+
+    public String getQuestion() {
+        return question;
+    }
+
+    public int getNumSecondsCreatedAgo() {
+        return numSecondsCreatedAgo;
+    }
+
+    public JSONObject getVotes() {
+        return votes;
+    }
+
+    public JSONObject getVote(String vote) {
+        try {
+            return votes.getJSONObject(vote);
+        } catch (JSONException e) {
+            return null;
+        }
+    }
+
+    public String formatNumSecondsCreatedAgo() {
+        if (numSecondsCreatedAgo < 0) {
+            return "error";
+        } else if (numSecondsCreatedAgo < 60) {
+            return "a few seconds ago";
+        } else if (numSecondsCreatedAgo < 3600) {
+            return (numSecondsCreatedAgo / 60) + " m";
+        } else if (numSecondsCreatedAgo < 86400) {
+            return (numSecondsCreatedAgo / 3600) + " h";
+        } else {
+            return (numSecondsCreatedAgo / 86400) + "d";
+        }
+    }
 }
