@@ -7,52 +7,32 @@ import com.google.android.gms.maps.SupportMapFragment;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 
-public class SettingsActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class SettingsActivity extends Fragment {
+
+    private ViewGroup container;
 
     private GoogleMap myMap;
     private int location_request_code;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_settings);
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
-        setSupportActionBar(myToolbar);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        this.container = container;
+        return inflater.inflate(R.layout.activity_settings, container, false);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.action_bar_1, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
-            return true;
-        } else if (id == R.id.action_me) {
-            startActivity(new Intent(getApplicationContext(), AllActivity.class));
-            return true;
-        } else if (id == R.id.action_all) {
-            startActivity(new Intent(getApplicationContext(), AllActivity.class));
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
+/*
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         if (requestCode == location_request_code) {
@@ -69,7 +49,7 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
     @Override
     public void onMapReady(GoogleMap googleMap) {
             myMap = googleMap;
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+            if (ContextCompat.checkSelfPermission(container.getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
                     == PackageManager.PERMISSION_GRANTED) {
                 myMap.setMyLocationEnabled(true);
             } else {
@@ -77,5 +57,5 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
             }
         }
 
-
+*/
 }

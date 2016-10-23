@@ -6,4 +6,7 @@
     <color name="colorMenuBarBackground">#E6FFD5</color>
     <color name="colorPollBackground">#C0ECFF</color>
     <color name="colorPollDivider">#73758C</color>
+    <color name="textColorPrimary">#FFFFFF</color>
+    <color name="windowBackground">#FFFFFF</color>
+    <color name="navigationBarColor">#000000</color>
 </resources>
