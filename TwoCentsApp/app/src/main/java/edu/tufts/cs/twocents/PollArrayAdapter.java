@@ -6,9 +6,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.json.JSONException;
@@ -52,34 +55,56 @@ public class PollArrayAdapter extends ArrayAdapter<Poll> {
             ((TextView) convertView.findViewById(R.id.poll_username)).
                     setText(poll.getUsername());
 
-            Iterator<String> votes_itr = poll.getVotes().keys();
             LinearLayout voteButtonContainer =
                     (LinearLayout) convertView.findViewById(R.id.poll_vote_button_container);
 
-            //Make sure that all child elements (i.e. voting buttons)
-            //are removed before adding the new ones.
             voteButtonContainer.removeAllViews();
 
-            while (votes_itr.hasNext()) {
-                String vote = votes_itr.next();
-                int vote_count = 0;
+            int voteCount, currentVoteCount = 0, totalVoteCount = poll.getVoteCount();
+            Iterator<String> i = poll.getVotes().keys();
+
+            while (i.hasNext()) {
+                String vote = i.next();
                 try {
-                    vote_count = poll.getVote(vote).getInt("count");
+                    voteCount = poll.getVote(vote).getInt("count");
 
+                    final float voteStartingPointPercentage = ((float)currentVoteCount / totalVoteCount);
+                    final float voteEndingPointPercentage = voteStartingPointPercentage +  ((float) voteCount / totalVoteCount);
 
-                    LinearLayout l = (LinearLayout) LayoutInflater.from(convertView.getContext())
+                    final LinearLayout l = (LinearLayout) LayoutInflater.from(convertView.getContext())
                             .inflate(R.layout.poll_vote_button_template, parent, false);
+
+                    final View v = l.findViewById(R.id.vote_button_line);
+                    l.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                        @Override
+                        public void onGlobalLayout() {
+                            //v.getViewTreeObserver().removeGlobalLayoutListener(this);
+                            int width  = l.getMeasuredWidth();
+                            int height = l.getMeasuredHeight();
+
+                            int startingPoint = Math.round(width * voteStartingPointPercentage);
+                            int endingPoint = Math.round(width * voteEndingPointPercentage);
+
+                            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) v.getLayoutParams();
+                            params.width = endingPoint - startingPoint;
+                            params.leftMargin = startingPoint;
+                            v.setLayoutParams(params);
+                        }
+                    });
+
+
                     Button b = (Button) l.findViewById(R.id.poll_vote_button);
 
-                    b.setText(vote + " (" + vote_count + ")");
+                    b.setText(vote);
                     b.setOnClickListener(new HandleVoteButtonClick(poll.getPollId(),
                             poll.getVote(vote).getString("optionId")));
                     b.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.buttonColorPrimary));
                     voteButtonContainer.addView(l);
+                    currentVoteCount += voteCount;
+
                 } catch (JSONException e) {
                     Log.v(TAG, "Couldn't find vote count");
                 }
-
             }
             return convertView;
         } else {
@@ -99,10 +124,11 @@ public class PollArrayAdapter extends ArrayAdapter<Poll> {
 
         @Override
         public void onClick(View view) {
+            Log.v(TAG, "clicked");
             String userKey = "9bac4d6226350f34ffa2c0dd77922b78";
             String [] getParams = {};
             MakeRequest request = new MakeRequest("/voteOnPoll" + "/" + userKey +  "/" + pollId + "/" + optionId, getParams);
-            request.execute();
+            //request.execute();
             view.refreshDrawableState();
         }
     }

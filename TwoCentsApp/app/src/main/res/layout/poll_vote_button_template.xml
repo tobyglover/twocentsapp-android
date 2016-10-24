@@ -4,14 +4,20 @@
     android:layout_height="wrap_content"
     android:layout_width="match_parent"
     android:id = "@+id/poll_vote_button_template"
+    android:orientation="vertical"
     >
     <Button
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/poll_vote_button"
         android:background="@color/buttonColorPrimary"
-        android:textColor="@color/textColorSecondary"
-        android:layout_margin="10dp">
+        android:textColor="@color/textColorSecondary">
     </Button>
+    <View
+        android:id="@+id/vote_button_line"
+        android:background="@color/colorAccent"
+        android:layout_height="5dp"
+        android:layout_width="wrap_content">
+    </View>
 </LinearLayout>
 

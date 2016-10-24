@@ -8,6 +8,7 @@ import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.TimeZone;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -48,6 +49,14 @@ public class Poll {
         return "Hello";
     }
 
+    public int getVoteCount() {
+        Iterator<String> i = votes.keys();
+        int count = 0;
+        while (i.hasNext()) {
+            count += getVoteCount(i.next());
+        }
+        return count;
+    }
 
     public String getUsername() {
         return username;
@@ -67,6 +76,14 @@ public class Poll {
 
     public JSONObject getVotes() {
         return votes;
+    }
+
+    public int getVoteCount(String vote) {
+        try {
+            return getVote(vote).getInt("count");
+        } catch (JSONException e) {
+            return 0;
+        }
     }
 
     public JSONObject getVote(String vote) {
