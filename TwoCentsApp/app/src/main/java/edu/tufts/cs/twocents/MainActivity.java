@@ -14,6 +14,9 @@ import com.google.android.gms.common.api.GoogleApiClient;
  * Created by John on 10/23/160.
  */
 public class MainActivity extends AppCompatActivity {
+    private static final String TAG = "MainActivity";
+
+    private final int [] ICON_IDS = {R.drawable.all_icon, R.drawable.settings_icon};
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
@@ -28,19 +31,17 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         tabLayout = (TabLayout) findViewById(R.id.tab_layout);
-
-        tabLayout.addTab(tabLayout.newTab().setText(R.string.tab_all));
-        //tabLayout.addTab(tabLayout.newTab().setText(R.string.tab_settings));
-        tabLayout.addTab(tabLayout.newTab().setText(R.string.tab_settings));
-        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-
         viewPager = (ViewPager) findViewById(R.id.pager);
+        tabLayout.setupWithViewPager(viewPager);
 
         adapter = new MainFragmentPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(adapter);
 
-        tabLayout.setupWithViewPager(viewPager);
+        for (int i = 0; i < tabLayout.getTabCount(); i++) {
+            tabLayout.getTabAt(i).setIcon(ICON_IDS[i]);
+        }
 
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {

@@ -28,19 +28,20 @@ import java.util.ArrayList;
 public class AllActivity extends Fragment {
     private static final String TAG = "AllActivity";
 
-    private ViewGroup container;
-
     private ListView pollListView;
     private ArrayList<Poll> polls;
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        this.container = container;
-        polls = new ArrayList<>();
-        pollListView = (ListView) container.findViewById(R.id.poll_list_view);
-        fetchPolls();
+
         return inflater.inflate(R.layout.activity_all, container, false);
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        polls = new ArrayList<>();
+        pollListView = (ListView) getView().findViewById(R.id.poll_list_view);
+        fetchPolls();
     }
 
     private void fetchPolls() {
@@ -66,7 +67,7 @@ public class AllActivity extends Fragment {
             for (int i = 0; i < pollArray.length(); i++) {
                 polls.add(new Poll(pollArray.getJSONObject(i)));
             }
-            PollArrayAdapter adapter = new PollArrayAdapter(container.getContext(), R.id.poll_list_view, polls);
+            PollArrayAdapter adapter = new PollArrayAdapter(getView().getContext(), R.id.poll_list_view, polls);
             pollListView.setAdapter(adapter);
 
         } catch (JSONException e) {

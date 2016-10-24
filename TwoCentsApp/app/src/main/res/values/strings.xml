@@ -2,8 +2,4 @@
     <string name="app_name">TwoCents</string>
     <string name="action_me">Me</string>
     <string name="radius_hint">Radius</string>
-    <string name="tab_all">All</string>
-    <string name="tab_settings">Settings</string>
-    <string name="tab_me">Me</string>
-
 </resources>

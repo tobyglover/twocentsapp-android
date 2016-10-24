@@ -12,6 +12,7 @@ import edu.tufts.cs.twocents.SettingsActivity;
  */
 public class MainFragmentPagerAdapter extends FragmentPagerAdapter {
 
+
     public MainFragmentPagerAdapter(FragmentManager fm) {
         super(fm);
     }
@@ -33,4 +34,7 @@ public class MainFragmentPagerAdapter extends FragmentPagerAdapter {
     public int getCount() {
         return 2;
     }
+
+
+
 }

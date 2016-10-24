@@ -74,10 +74,9 @@ public class PollArrayAdapter extends ArrayAdapter<Poll> {
                 }
 
             }
-
             return convertView;
         } else {
-            Log.v("PollArrayAdapter", "Poll is NULL");
+            Log.v(TAG, "Poll is NULL");
         }
 
         return convertView;

@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorPrimaryDark">#000000</color>
     <color name="colorAccent">#FF4081</color>
     <color name="colorMenuBarBackground">#E6FFD5</color>
-    <color name="colorPollBackground">#C0ECFF</color>
-    <color name="colorPollDivider">#73758C</color>
+    <color name="colorPollBackground">#000000</color>
+    <color name="colorPollDivider">#FFFFFF</color>
     <color name="textColorPrimary">#FFFFFF</color>
     <color name="windowBackground">#FFFFFF</color>
     <color name="navigationBarColor">#000000</color>
+
+    <color name="tabColor">#3C51FF</color>
+    <color name="tabSelectedColor">#3C51FF</color>
+
+    <color name="app_bar_background">#777700</color>
+
 </resources>
