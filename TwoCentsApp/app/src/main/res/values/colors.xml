@@ -7,6 +7,8 @@
     <color name="colorPollBackground">#000000</color>
     <color name="colorPollDivider">#FFFFFF</color>
     <color name="textColorPrimary">#FFFFFF</color>
+    <color name="textColorSecondary">#000000</color>
+
     <color name="windowBackground">#FFFFFF</color>
     <color name="navigationBarColor">#000000</color>
 
@@ -14,5 +16,6 @@
     <color name="tabSelectedColor">#3C51FF</color>
 
     <color name="app_bar_background">#777700</color>
+    <color name="buttonColorPrimary">#FFFFFF</color>
 
 </resources>

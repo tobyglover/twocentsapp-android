@@ -1,6 +1,7 @@
 package edu.tufts.cs.twocents;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -64,11 +65,17 @@ public class PollArrayAdapter extends ArrayAdapter<Poll> {
                 int vote_count = 0;
                 try {
                     vote_count = poll.getVote(vote).getInt("count");
-                    Button b = new Button(convertView.getContext());
+
+
+                    LinearLayout l = (LinearLayout) LayoutInflater.from(convertView.getContext())
+                            .inflate(R.layout.poll_vote_button_template, parent, false);
+                    Button b = (Button) l.findViewById(R.id.poll_vote_button);
+
                     b.setText(vote + " (" + vote_count + ")");
                     b.setOnClickListener(new HandleVoteButtonClick(poll.getPollId(),
                             poll.getVote(vote).getString("optionId")));
-                    voteButtonContainer.addView(b);
+                    b.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.buttonColorPrimary));
+                    voteButtonContainer.addView(l);
                 } catch (JSONException e) {
                     Log.v(TAG, "Couldn't find vote count");
                 }
