@@ -3,6 +3,7 @@ package edu.tufts.cs.twocents;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -15,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -29,6 +31,7 @@ public class AllActivity extends Fragment {
     private static final String TAG = "AllActivity";
 
     private ListView pollListView;
+    private FloatingActionButton newPollButton;
     private ArrayList<Poll> polls;
 
     @Override
@@ -41,6 +44,13 @@ public class AllActivity extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         polls = new ArrayList<>();
         pollListView = (ListView) getView().findViewById(R.id.poll_list_view);
+        newPollButton = (FloatingActionButton) getView().findViewById(R.id.new_post_button);
+        newPollButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.v(TAG, "New Poll Button Clicked");
+            }
+        });
         fetchPolls();
     }
 
