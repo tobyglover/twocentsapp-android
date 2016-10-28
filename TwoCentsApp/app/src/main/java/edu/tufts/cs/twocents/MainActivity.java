@@ -1,6 +1,7 @@
 package edu.tufts.cs.twocents;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.design.widget.TabLayout;
@@ -21,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private MainFragmentPagerAdapter adapter;
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +60,12 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+        user = new User(getApplicationContext());
+        if (!user.isUserKeySet()) {
+            Intent intent = new Intent(this, CreateUserActivity.class);
+            startActivity(intent);
+        }
     }
 }
 

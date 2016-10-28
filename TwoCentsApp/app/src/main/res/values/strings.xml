@@ -3,4 +3,5 @@
     <string name="action_me">Me</string>
     <string name="radius_hint">Radius</string>
     <string name="title_activity_post_new_poll">PostNewPollActivity</string>
+    <string name="title_activity_create_user">CreateUserActivity</string>
 </resources>

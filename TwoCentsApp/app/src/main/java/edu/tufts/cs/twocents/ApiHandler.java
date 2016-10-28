@@ -34,7 +34,7 @@ public class ApiHandler implements Requestable {
     public void makeRequest(ApiMethods apiMethod, final Map<String, String> params, Map<String, String> urlParams) {
 
         String url = BASE_URL;
-        JSONObject parameters = null;
+        JSONObject postParams = null;
         int method = Request.Method.GET;
 
         switch (apiMethod) {
@@ -46,8 +46,7 @@ public class ApiHandler implements Requestable {
                 break;
             case CREATE_NEW_POLL:
                 method = Request.Method.POST;
-                parameters = new JSONObject(params);
-                Log.v(TAG, parameters.toString());
+                postParams = new JSONObject(params);
                 url += "createNewPoll/" + urlParams.get("userKey") + "/";
                 break;
             case VOTE_ON_POLL:
@@ -66,7 +65,7 @@ public class ApiHandler implements Requestable {
             }
         }
 
-        JsonObjectRequest request = new JsonObjectRequest(method, url, parameters, new Response.Listener<JSONObject>() {
+        JsonObjectRequest request = new JsonObjectRequest(method, url, postParams, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 onCompleted(response);
