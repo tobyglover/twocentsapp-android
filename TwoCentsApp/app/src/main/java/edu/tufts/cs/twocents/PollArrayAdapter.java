@@ -127,7 +127,7 @@ public class PollArrayAdapter extends ArrayAdapter<Poll> {
             Log.v(TAG, "clicked");
             String userKey = "9bac4d6226350f34ffa2c0dd77922b78";
             String [] getParams = {};
-            MakeRequest request = new MakeRequest("/voteOnPoll" + "/" + userKey +  "/" + pollId + "/" + optionId, getParams);
+//            MakeRequest request = new MakeRequest("/voteOnPoll" + "/" + userKey +  "/" + pollId + "/" + optionId, getParams);
             //request.execute();
             view.refreshDrawableState();
         }

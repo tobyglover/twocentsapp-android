@@ -3,6 +3,7 @@ package edu.tufts.cs.twocents;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -25,6 +26,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 
 public class AllActivity extends Fragment {
@@ -36,7 +41,6 @@ public class AllActivity extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         return inflater.inflate(R.layout.activity_all, container, false);
     }
 
@@ -48,26 +52,28 @@ public class AllActivity extends Fragment {
         newPollButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.v(TAG, "New Poll Button Clicked");
+                Intent intent = new Intent(getActivity(), PostNewPollActivity.class);
+                startActivity(intent);
             }
         });
         fetchPolls();
     }
 
     private void fetchPolls() {
-        String [] getParams = {"lat=2", "lng=-5", "radius=5"};
-        MakeRequest mr = new MakeRequest("getPolls", getParams) {
+        Map<String, String> getParams = new HashMap<>();
+        getParams.put("lat", "-5");
+        getParams.put("lng", "-5");
+        getParams.put("radius", "5");
+
+        ApiHandler apiHandler = new ApiHandler(getContext().getApplicationContext()) {
             @Override
-            protected void onPostExecute(JSONObject result) {
-                if (result != null) {
-                    displayPolls(result);
-                    Log.v(TAG, result.toString());
-                } else {
-                    Log.v(TAG, "JSON Object was NULL");
-                }
+            public void onCompleted(JSONObject response) {
+                Log.v(TAG, response.toString());
+                displayPolls(response);
             }
         };
-        mr.execute();
+
+        apiHandler.makeRequest(ApiMethods.GET_POLLS, getParams, null);
     }
 
     private void displayPolls(JSONObject JSONPolls) {

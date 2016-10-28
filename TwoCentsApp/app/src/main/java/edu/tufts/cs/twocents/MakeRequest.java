@@ -17,14 +17,18 @@ public class MakeRequest extends AsyncTask<Void, Void, JSONObject> {
 
     private static final String TAG = "MakeRequest";
 
+    public static enum HTTP_Methods {GET, POST};
+
     private String baseUrl = "http://2cnts.com/api/";
     private String pathUrl = "";
     private String[] getParams;
+    private HTTP_Methods method;
 
-    public MakeRequest(String pathUrl, String[] getParams) {
+    public MakeRequest(String pathUrl, String[] getParams, HTTP_Methods method) {
         super();
         this.pathUrl = pathUrl;
         this.getParams = getParams;
+        this.method = method;
     }
 
     @Override
@@ -40,7 +44,11 @@ public class MakeRequest extends AsyncTask<Void, Void, JSONObject> {
             URL url = new URL(urlString);
 
             urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setRequestMethod("GET");
+            if (this.method == HTTP_Methods.GET) {
+                urlConnection.setRequestMethod("GET");
+            } else {
+                urlConnection.setRequestMethod("GET");
+            }
             urlConnection.connect();
 
             InputStream inputStream = urlConnection.getInputStream();
