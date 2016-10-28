@@ -18,8 +18,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Date;
+import java.util.Map;
 
 
 /**
@@ -123,12 +125,25 @@ public class PollArrayAdapter extends ArrayAdapter<Poll> {
         }
 
         @Override
-        public void onClick(View view) {
+        public void onClick(final View view) {
             Log.v(TAG, "clicked");
             String userKey = "9bac4d6226350f34ffa2c0dd77922b78";
-            String [] getParams = {};
-//            MakeRequest request = new MakeRequest("/voteOnPoll" + "/" + userKey +  "/" + pollId + "/" + optionId, getParams);
-            //request.execute();
+            Map<String, String> urlParams = new HashMap<>();
+            urlParams.put("userKey", userKey);
+            urlParams.put("pollId", this.pollId);
+            urlParams.put("optionId", this.optionId);
+
+            ApiHandler apiHandler = new ApiHandler(getContext().getApplicationContext()) {
+                @Override
+                public void onCompleted(JSONObject response) {
+                    requestDone(view);
+                }
+            };
+
+            apiHandler.makeRequest(ApiMethods.VOTE_ON_POLL, null, urlParams);
+        }
+
+        private void requestDone(View view) {
             view.refreshDrawableState();
         }
     }

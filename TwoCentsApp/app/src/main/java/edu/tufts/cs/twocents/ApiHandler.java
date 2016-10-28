@@ -59,7 +59,7 @@ public class ApiHandler implements Requestable {
         }
 
         // getParams() is overridden by JsonObjectRequest, can't use it
-        if (method == Request.Method.GET) {
+        if (method == Request.Method.GET && params != null) {
             url += "?";
             for (String key : params.keySet()) {
                 url += key + "=" + params.get(key) + "&";
