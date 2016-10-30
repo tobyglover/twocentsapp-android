@@ -3,24 +3,15 @@ package edu.tufts.cs.twocents;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * Created by toby on 10/28/16.
  */
 
 public class User {
-    private static String userKey;
     private static final String PREF_NAME = "UserKey";
     private SharedPreferences sharedPrefs;
-    private Context context;
 
     public User(Context context) {
-        this.context = context;
         sharedPrefs = context.getSharedPreferences(PREF_NAME, context.MODE_PRIVATE);
     }
 

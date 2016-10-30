@@ -5,15 +5,25 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-    <EditText
-        android:id="@+id/radius"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="@string/radius_hint"
-        android:inputType="number" />
-    <!--<fragment xmlns:android="http://schemas.android.com/apk/res/android"
-        android:name="com.google.android.gms.maps.MapFragment"
-        android:id="@+id/map"
+
+    <TextView
         android:layout_width="match_parent"
-        android:layout_height="300dp"/>-->
+        android:layout_height="wrap_content"
+        android:text="Radius"
+        android:layout_margin="10dp"
+        android:id="@+id/radius_value"/>
+
+    <SeekBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/radius"
+        android:layout_below="@id/radius_value"
+        android:max="9"/>
+
+    <com.google.android.gms.maps.MapView
+        android:id="@+id/mapView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/radius"/>
+
 </RelativeLayout>
