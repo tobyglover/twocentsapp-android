@@ -4,9 +4,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import edu.tufts.cs.twocents.AllActivity;
-import edu.tufts.cs.twocents.SettingsActivity;
-
 /**
  * Created by John on 10/23/16.
  */
@@ -21,9 +18,14 @@ public class MainFragmentPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                AllActivity allActivity = new AllActivity();
-                return allActivity;
+                ListPollsFragment allPollsFragment = new ListPollsFragment();
+                allPollsFragment.setType(ListPollsFragment.ListPollType.ALL);
+                return allPollsFragment;
             case 1:
+                ListPollsFragment userPollsFragment = new ListPollsFragment();
+                userPollsFragment.setType(ListPollsFragment.ListPollType.USER);
+                return userPollsFragment;
+            case 2:
                 SettingsActivity settingsActivity = new SettingsActivity();
                 return settingsActivity;
         }
@@ -32,7 +34,7 @@ public class MainFragmentPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return 2;
+        return 3;
     }
 
 

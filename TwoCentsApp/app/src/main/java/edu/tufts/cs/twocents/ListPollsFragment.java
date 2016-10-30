@@ -32,12 +32,18 @@ import java.util.Map;
 import java.util.Set;
 
 
-public class AllActivity extends Fragment {
-    private static final String TAG = "AllActivity";
+public class ListPollsFragment extends Fragment {
+    private static final String TAG = "ListPollsFragment";
 
+    public enum ListPollType {ALL, USER};
     private ListView pollListView;
     private FloatingActionButton newPollButton;
     private ArrayList<Poll> polls;
+    private ListPollType type;
+
+    public void setType(ListPollType type) {
+        this.type = type;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -73,7 +79,11 @@ public class AllActivity extends Fragment {
             }
         };
 
-        apiHandler.makeRequest(ApiMethods.GET_POLLS, getParams, null);
+        if (this.type == ListPollType.ALL) {
+            apiHandler.makeRequest(ApiMethods.GET_POLLS, getParams, null);
+        } else {
+            apiHandler.makeRequest(ApiMethods.GET_POLLS_FOR_USER, getParams, null);
+        }
     }
 
     private void displayPolls(JSONObject JSONPolls) {

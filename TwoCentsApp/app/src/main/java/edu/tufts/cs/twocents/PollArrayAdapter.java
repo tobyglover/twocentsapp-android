@@ -126,10 +126,8 @@ public class PollArrayAdapter extends ArrayAdapter<Poll> {
 
         @Override
         public void onClick(final View view) {
-            Log.v(TAG, "clicked");
-            String userKey = "9bac4d6226350f34ffa2c0dd77922b78";
             Map<String, String> urlParams = new HashMap<>();
-            urlParams.put("userKey", userKey);
+
             urlParams.put("pollId", this.pollId);
             urlParams.put("optionId", this.optionId);
 

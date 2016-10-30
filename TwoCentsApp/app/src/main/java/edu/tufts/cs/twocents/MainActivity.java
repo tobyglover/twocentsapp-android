@@ -17,7 +17,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
 
-    private final int [] ICON_IDS = {R.drawable.all_icon, R.drawable.settings_icon};
+    private final int [] ICON_IDS = {R.drawable.all_icon, R.drawable.me_icon, R.drawable.settings_icon};
 
     private TabLayout tabLayout;
     private ViewPager viewPager;

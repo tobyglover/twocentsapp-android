@@ -46,12 +46,12 @@ public class PostNewPollActivity extends AppCompatActivity {
         params.put("question", poll_text.getText().toString());
 
         Map<String, String> urlParams = new HashMap<>();
-        urlParams.put("userKey", "b84a670a3eb6a6825cc19122141f96a3");
 
         ApiHandler apiHandler = new ApiHandler(getApplicationContext()) {
             @Override
             public void onCompleted(JSONObject response) {
                 Log.v(TAG, response.toString());
+                progress.dismiss();
                 close();
             }
             @Override

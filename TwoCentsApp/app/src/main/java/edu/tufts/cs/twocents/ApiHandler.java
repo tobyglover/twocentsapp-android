@@ -25,9 +25,11 @@ public class ApiHandler implements Requestable {
     private static final String TAG = "ApiHandler";
     private static final String BASE_URL = "http://2cnts.com/api/";
     private Context context;
+    private User user;
 
     public ApiHandler(Context context) {
         this.context = context;
+        this.user = new User(context);
     }
 
 
@@ -47,14 +49,18 @@ public class ApiHandler implements Requestable {
             case CREATE_NEW_POLL:
                 method = Request.Method.POST;
                 postParams = new JSONObject(params);
-                url += "createNewPoll/" + urlParams.get("userKey") + "/";
+                url += "createNewPoll/" + this.user.getUserKey() + "/";
                 break;
             case VOTE_ON_POLL:
-                url += "voteOnPoll/" + urlParams.get("userKey") + "/" + urlParams.get("pollId") + "/" + urlParams.get("optionId") + "/";
+                url += "voteOnPoll/" + this.user.getUserKey() + "/" + urlParams.get("pollId") + "/" + urlParams.get("optionId") + "/";
                 break;
             case GET_POLLS:
                 url += "getPolls";
                 break;
+            case GET_POLLS_FOR_USER:
+                url += "getPollsForUser/" + this.user.getUserKey() + "/";
+                break;
+
         }
 
         // getParams() is overridden by JsonObjectRequest, can't use it
