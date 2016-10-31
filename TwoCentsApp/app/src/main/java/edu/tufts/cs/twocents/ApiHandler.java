@@ -3,14 +3,14 @@ package edu.tufts.cs.twocents;
 import android.content.Context;
 import android.util.Log;
 
-import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 
 import org.json.JSONObject;
+
+import java.util.HashMap;
 import java.util.Map;
 
 
@@ -26,18 +26,29 @@ public class ApiHandler implements Requestable {
     private static final String BASE_URL = "http://2cnts.com/api/";
     private Context context;
     private User user;
+    private StoredSettings storedSettings;
 
     public ApiHandler(Context context) {
         this.context = context;
         this.user = new User(context);
+        this.storedSettings = new StoredSettings(context);
     }
 
 
-    public void makeRequest(ApiMethods apiMethod, final Map<String, String> params, Map<String, String> urlParams) {
+    public void makeRequest(ApiMethods apiMethod, Map<String, String> params, Map<String, String> urlParams) {
 
         String url = BASE_URL;
         JSONObject postParams = null;
         int method = Request.Method.GET;
+
+        if (apiMethod == ApiMethods.GET_POLLS || apiMethod == ApiMethods.GET_POLLS_FOR_USER || apiMethod == ApiMethods.CREATE_NEW_POLL) {
+            if (params == null) {
+                params = new HashMap<>();
+            }
+            params.put("lat", "-5"); // need to make this real values
+            params.put("lng", "-5");
+            params.put("radius", Integer.toString(storedSettings.getRadius()));
+        }
 
         switch (apiMethod) {
             case CREATE_NEW_USER:

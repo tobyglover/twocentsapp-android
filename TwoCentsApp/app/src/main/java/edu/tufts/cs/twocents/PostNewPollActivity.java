@@ -41,11 +41,7 @@ public class PostNewPollActivity extends AppCompatActivity {
         progress.show();
 
         Map<String, String> params = new HashMap<>();
-        params.put("lat", "-5");
-        params.put("lng", "-5");
         params.put("question", poll_text.getText().toString());
-
-        Map<String, String> urlParams = new HashMap<>();
 
         ApiHandler apiHandler = new ApiHandler(getApplicationContext()) {
             @Override
@@ -62,7 +58,7 @@ public class PostNewPollActivity extends AppCompatActivity {
             }
         };
 
-        apiHandler.makeRequest(ApiMethods.CREATE_NEW_POLL, params, urlParams);
+        apiHandler.makeRequest(ApiMethods.CREATE_NEW_POLL, params, null);
     }
 
     public void close() {

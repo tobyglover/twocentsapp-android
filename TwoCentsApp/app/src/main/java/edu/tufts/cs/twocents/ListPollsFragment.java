@@ -66,11 +66,6 @@ public class ListPollsFragment extends Fragment {
     }
 
     private void fetchPolls() {
-        Map<String, String> getParams = new HashMap<>();
-        getParams.put("lat", "-5");
-        getParams.put("lng", "-5");
-        getParams.put("radius", "5");
-
         ApiHandler apiHandler = new ApiHandler(getContext().getApplicationContext()) {
             @Override
             public void onCompleted(JSONObject response) {
@@ -80,9 +75,9 @@ public class ListPollsFragment extends Fragment {
         };
 
         if (this.type == ListPollType.ALL) {
-            apiHandler.makeRequest(ApiMethods.GET_POLLS, getParams, null);
+            apiHandler.makeRequest(ApiMethods.GET_POLLS, null, null);
         } else {
-            apiHandler.makeRequest(ApiMethods.GET_POLLS_FOR_USER, getParams, null);
+            apiHandler.makeRequest(ApiMethods.GET_POLLS_FOR_USER, null, null);
         }
     }
 
