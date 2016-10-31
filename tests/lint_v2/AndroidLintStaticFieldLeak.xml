@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<problems>
+  <problem>
+    <file>file://$PROJECT_DIR$/app/src/main/java/edu/tufts/cs/twocents/RequestSingleton.java</file>
+    <line>15</line>
+    <module>app</module>
+    <package>edu.tufts.cs.twocents</package>
+    <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/src/main/java/edu/tufts/cs/twocents/RequestSingleton.java" />
+    <problem_class severity="WARNING" attribute_key="WARNING_ATTRIBUTES">Static Field Leaks</problem_class>
+    <hints />
+    <description>&lt;html&gt;Do not place Android context classes in static fields (static reference to &lt;code&gt;RequestSingleton&lt;/code&gt; which has field &lt;code&gt;mCtx&lt;/code&gt; pointing to &lt;code&gt;Context&lt;/code&gt;); this is a memory leak (and also breaks Instant Run)&lt;/html&gt;</description>
+  </problem>
+</problems>
+
