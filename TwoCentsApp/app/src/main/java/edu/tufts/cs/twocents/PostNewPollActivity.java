@@ -2,10 +2,7 @@ package edu.tufts.cs.twocents;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -32,6 +29,7 @@ public class PostNewPollActivity extends AppCompatActivity {
     }
 
     public void cancel(View view) {
+
         close();
     }
 
@@ -50,6 +48,7 @@ public class PostNewPollActivity extends AppCompatActivity {
                 progress.dismiss();
                 close();
             }
+
             @Override
             public void onError() {
                 progress.dismiss();
@@ -61,7 +60,7 @@ public class PostNewPollActivity extends AppCompatActivity {
         apiHandler.makeRequest(ApiMethods.CREATE_NEW_POLL, params, null);
     }
 
-    public void close() {
+    private void close() {
         super.onBackPressed();
     }
 

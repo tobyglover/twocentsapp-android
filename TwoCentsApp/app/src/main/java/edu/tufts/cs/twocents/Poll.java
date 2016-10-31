@@ -2,22 +2,16 @@ package edu.tufts.cs.twocents;
 
 import android.util.Log;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.ParseException;
-import java.util.Date;
 import java.util.Iterator;
-import java.util.TimeZone;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Created by John on 10/12/16.
+ * Poll
  */
-public class Poll {
+class Poll {
 
     private static final String TAG = "Poll";
 
@@ -41,6 +35,7 @@ public class Poll {
             numSecondsCreatedAgo = poll.getInt("createdAgo");
 
         } catch (JSONException e) {
+            Log.v(TAG, "Couldn't parse JSON");
         }
     }
 
@@ -70,15 +65,11 @@ public class Poll {
         return question;
     }
 
-    public int getNumSecondsCreatedAgo() {
-        return numSecondsCreatedAgo;
-    }
-
     public JSONObject getVotes() {
         return votes;
     }
 
-    public int getVoteCount(String vote) {
+    private int getVoteCount(String vote) {
         try {
             return getVote(vote).getInt("count");
         } catch (JSONException e) {

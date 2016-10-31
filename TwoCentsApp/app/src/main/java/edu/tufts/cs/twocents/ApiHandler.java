@@ -16,6 +16,7 @@ import java.util.Map;
 
 /**
  * Created by toby on 10/27/16.
+ * Api Handler
  */
 
 
@@ -24,9 +25,9 @@ public class ApiHandler implements Requestable {
 
     private static final String TAG = "ApiHandler";
     private static final String BASE_URL = "http://2cnts.com/api/";
-    private Context context;
-    private User user;
-    private StoredSettings storedSettings;
+    private final Context context;
+    private final User user;
+    private final StoredSettings storedSettings;
 
     public ApiHandler(Context context) {
         this.context = context;
@@ -98,12 +99,8 @@ public class ApiHandler implements Requestable {
         RequestSingleton.getInstance(this.context).addToRequestQueue(request);
     }
 
-    public void onCompleted(JSONObject response) {
-        return;
-    }
+    public void onCompleted(JSONObject response) {}
 
-    public void onError() {
-        return;
-    }
+    public void onError() {}
 
 }

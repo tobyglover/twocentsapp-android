@@ -29,11 +29,11 @@
         <activity
             android:name=".PostNewPollActivity"
             android:label="@string/title_activity_post_new_poll"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".CreateUserActivity"
             android:label="@string/title_activity_create_user"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
     </application>
 
 </manifest>

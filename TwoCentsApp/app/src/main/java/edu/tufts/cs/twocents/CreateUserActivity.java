@@ -17,7 +17,6 @@ import java.util.Map;
 public class CreateUserActivity extends AppCompatActivity {
 
     private EditText usernameInput;
-    private Button goButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +24,7 @@ public class CreateUserActivity extends AppCompatActivity {
         setContentView(R.layout.activity_create_user);
 
         usernameInput = (EditText)findViewById(R.id.usernameInput);
-        goButton = (Button)findViewById(R.id.goButton);
+        Button goButton = (Button) findViewById(R.id.goButton);
 
         goButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -49,11 +48,9 @@ public class CreateUserActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onBackPressed() {
-        return;
-    }
+    public void onBackPressed() {}
 
-    public void createNewUser() {
+    private void createNewUser() {
         Map<String, String> getParams = new HashMap<>();
         String username = usernameInput.getText().toString();
 
@@ -77,7 +74,7 @@ public class CreateUserActivity extends AppCompatActivity {
         apiHandler.makeRequest(ApiMethods.CREATE_NEW_USER, getParams, null);
     }
 
-    public void requestDone(String userKey) {
+    private void requestDone(String userKey) {
         User user = new User(getApplicationContext());
         user.setUserKey(userKey);
         super.onBackPressed();

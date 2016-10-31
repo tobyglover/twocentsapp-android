@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:background="@color/colorPollBackground"
         android:divider="@color/colorPollDivider"
-        android:dividerHeight="4px">
+        android:dividerHeight="4dp">
     </ListView>
 
     <android.support.design.widget.FloatingActionButton
@@ -20,6 +20,6 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:src="@drawable/plus_icon" />
 </RelativeLayout>

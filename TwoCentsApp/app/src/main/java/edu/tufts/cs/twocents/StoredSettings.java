@@ -5,18 +5,18 @@ import android.content.SharedPreferences;
 
 /**
  * Created by toby on 10/30/16.
+ * Stored Settings
  */
 
-public class StoredSettings {
+class StoredSettings {
     private static final String FILE_PREF_NAME = "Settings";
     private static final String RADIUS_PREF = "Radius";
     private static final int RADIUS_DEFAULT = 3;
 
-    private SharedPreferences sharedPrefs;
-    private SharedPreferences.Editor editor;
+    private final SharedPreferences sharedPrefs;
 
     public StoredSettings(Context context) {
-        sharedPrefs = context.getSharedPreferences(FILE_PREF_NAME, context.MODE_PRIVATE);
+        sharedPrefs = context.getSharedPreferences(FILE_PREF_NAME, Context.MODE_PRIVATE);
     }
 
     public int getRadius() {
@@ -24,11 +24,8 @@ public class StoredSettings {
     }
 
     public void setRadius(int radius) {
-        if (this.editor == null) {
-            this.editor = this.sharedPrefs.edit();
-        }
-
+        SharedPreferences.Editor editor = this.sharedPrefs.edit();
         editor.putInt(RADIUS_PREF, radius);
-        editor.commit();
+        editor.apply();
     }
 }

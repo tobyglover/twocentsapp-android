@@ -6,8 +6,9 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 /**
  * Created by John on 10/23/16.
+ * MainFragmentPagerAdapter
  */
-public class MainFragmentPagerAdapter extends FragmentPagerAdapter {
+class MainFragmentPagerAdapter extends FragmentPagerAdapter {
 
 
     public MainFragmentPagerAdapter(FragmentManager fm) {
@@ -26,8 +27,7 @@ public class MainFragmentPagerAdapter extends FragmentPagerAdapter {
                 userPollsFragment.setType(ListPollsFragment.ListPollType.USER);
                 return userPollsFragment;
             case 2:
-                SettingsActivity settingsActivity = new SettingsActivity();
-                return settingsActivity;
+                return new SettingsActivity();
         }
         return null;
     }

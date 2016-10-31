@@ -3,26 +3,21 @@ package edu.tufts.cs.twocents;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import com.google.android.gms.common.api.GoogleApiClient;
 
 
 /**
- * Created by John on 10/23/160.
+ * Created by John on 10/23/16.
+ * MainActivity
  */
 public class MainActivity extends AppCompatActivity {
-    private static final String TAG = "MainActivity";
 
     private final int [] ICON_IDS = {R.drawable.all_icon, R.drawable.me_icon, R.drawable.settings_icon};
 
-    private TabLayout tabLayout;
     private ViewPager viewPager;
-    private MainFragmentPagerAdapter adapter;
-    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,11 +27,11 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        tabLayout = (TabLayout) findViewById(R.id.tab_layout);
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         viewPager = (ViewPager) findViewById(R.id.pager);
         tabLayout.setupWithViewPager(viewPager);
 
-        adapter = new MainFragmentPagerAdapter(getSupportFragmentManager());
+        MainFragmentPagerAdapter adapter = new MainFragmentPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(adapter);
 
         for (int i = 0; i < tabLayout.getTabCount(); i++) {
@@ -61,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        user = new User(getApplicationContext());
+        User user = new User(getApplicationContext());
         if (!user.isUserKeySet()) {
             Intent intent = new Intent(this, CreateUserActivity.class);
             startActivity(intent);

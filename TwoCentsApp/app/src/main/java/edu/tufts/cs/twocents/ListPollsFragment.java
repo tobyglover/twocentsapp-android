@@ -1,43 +1,28 @@
 package edu.tufts.cs.twocents;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.support.annotation.NonNull;
+import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
 
 
 public class ListPollsFragment extends Fragment {
     private static final String TAG = "ListPollsFragment";
 
-    public enum ListPollType {ALL, USER};
+    public enum ListPollType {ALL, USER}
+
     private ListView pollListView;
-    private FloatingActionButton newPollButton;
     private ArrayList<Poll> polls;
     private ListPollType type;
 
@@ -54,7 +39,7 @@ public class ListPollsFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         polls = new ArrayList<>();
         pollListView = (ListView) getView().findViewById(R.id.poll_list_view);
-        newPollButton = (FloatingActionButton) getView().findViewById(R.id.new_post_button);
+        FloatingActionButton newPollButton = (FloatingActionButton) getView().findViewById(R.id.new_post_button);
         newPollButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

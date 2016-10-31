@@ -5,14 +5,15 @@ import android.content.SharedPreferences;
 
 /**
  * Created by toby on 10/28/16.
+ * User
  */
 
-public class User {
+class User {
     private static final String PREF_NAME = "UserKey";
-    private SharedPreferences sharedPrefs;
+    private final SharedPreferences sharedPrefs;
 
     public User(Context context) {
-        sharedPrefs = context.getSharedPreferences(PREF_NAME, context.MODE_PRIVATE);
+        sharedPrefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
     }
 
     public Boolean isUserKeySet() {
@@ -28,7 +29,7 @@ public class User {
         if (!isUserKeySet()) {
             SharedPreferences.Editor editor = this.sharedPrefs.edit();
             editor.putString(PREF_NAME, userKey);
-            editor.commit();
+            editor.apply();
         }
     }
 }

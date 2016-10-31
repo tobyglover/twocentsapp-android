@@ -4,9 +4,10 @@ import org.json.JSONObject;
 
 /**
  * Created by toby on 10/27/16.
+ * Requestable
  */
 
-public interface Requestable {
-    public void onCompleted(JSONObject response);
-    public void onError();
+interface Requestable {
+    void onCompleted(JSONObject response);
+    void onError();
 }
