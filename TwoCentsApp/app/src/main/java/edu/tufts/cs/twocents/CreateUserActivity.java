@@ -54,7 +54,6 @@ public class CreateUserActivity extends AppCompatActivity {
         Map<String, String> getParams = new HashMap<>();
         String username = usernameInput.getText().toString();
 
-        getParams.put("deviceId", "1234test");
         if (!username.isEmpty()) {
             getParams.put("username", username);
         }

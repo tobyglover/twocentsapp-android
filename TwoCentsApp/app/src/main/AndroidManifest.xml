@@ -34,6 +34,9 @@
             android:name=".CreateUserActivity"
             android:label="@string/title_activity_create_user"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="0cc6319e9ee5b9147e9b13ee7ae1200550120db3" />
     </application>
 
 </manifest>
