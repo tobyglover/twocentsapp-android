@@ -45,7 +45,6 @@ public class SettingsActivity extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_settings, container, false);
-
         storedSettings = new StoredSettings(getContext().getApplicationContext());
 
         initializeRadius(view);
@@ -69,14 +68,10 @@ public class SettingsActivity extends Fragment {
             }
 
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
+            public void onStartTrackingTouch(SeekBar seekBar) {}
 
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
+            public void onStopTrackingTouch(SeekBar seekBar) {}
         });
     }
 
@@ -89,18 +84,19 @@ public class SettingsActivity extends Fragment {
             locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
             LocationListener locationListener = new LocationListener() {
                 public void onLocationChanged(Location location) {
-                    map.clear();
+                    storedSettings.setMostRecentLocation(location);
 
                     LatLng myLatLng = new LatLng(location.getLatitude(), location.getLongitude());
                     Log.v(TAG, "Location: " + myLatLng.toString());
-                    map.addMarker(new MarkerOptions().position(myLatLng).title("Your Location"));
+
+                    map.clear();
+                    map.addMarker(new MarkerOptions().position(myLatLng).title("I'm here!"));
 
                     CameraPosition cameraPosition = new CameraPosition.Builder().target(myLatLng).zoom(DEFAULT_ZOOM).build();
                     map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
                     CircleOptions circleOptions = new CircleOptions().center(myLatLng).radius(storedSettings.getRadius() * 1000);
                     userCircle = map.addCircle(circleOptions);
-                    Log.v(TAG, location.toString());
                 }
                 public void onStatusChanged(String provider, int status, Bundle extras) {}
                 public void onProviderEnabled(String provider) {}
@@ -127,6 +123,17 @@ public class SettingsActivity extends Fragment {
             @Override
             public void onMapReady(GoogleMap gMap) {
                 map = gMap;
+                LatLng myLatLng = new LatLng(storedSettings.getMostRecentLat(), storedSettings.getMostRecentLng());
+                Log.v(TAG, "Saved Location: " + myLatLng.toString());
+
+                map.clear();
+                map.addMarker(new MarkerOptions().position(myLatLng).title("I'm here!"));
+
+                CameraPosition cameraPosition = new CameraPosition.Builder().target(myLatLng).zoom(DEFAULT_ZOOM).build();
+                map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+
+                CircleOptions circleOptions = new CircleOptions().center(myLatLng).radius(storedSettings.getRadius() * 1000);
+                userCircle = map.addCircle(circleOptions);
                 initializeUserLocation();
             }
         });
