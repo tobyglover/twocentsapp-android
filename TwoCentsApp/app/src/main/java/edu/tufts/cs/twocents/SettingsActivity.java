@@ -1,7 +1,15 @@
 package edu.tufts.cs.twocents;
 
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +28,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 public class SettingsActivity extends Fragment {
+    private static final String TAG = "SettingsActivity";
+    private static final int DEFAULT_ZOOM = 10;
 
     private GoogleMap map;
     private MapView mapView;
@@ -27,16 +37,81 @@ public class SettingsActivity extends Fragment {
     private TextView radiusValue;
     private StoredSettings storedSettings;
     private Circle userCircle;
+    private LocationManager locationManager;
+
+    private static final int MY_PERMISSIONS_ACCESS_LOCATION_FINE = 1;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_settings, container, false);
 
-
         storedSettings = new StoredSettings(getContext().getApplicationContext());
 
+        initializeRadius(view);
+        initializeMap(view, savedInstanceState);
+
+        return view;
+    }
+
+    public void initializeRadius(View view) {
         radiusBar = (SeekBar) view.findViewById(R.id.radius);
         radiusValue = (TextView) view.findViewById(R.id.radius_value);
+        radiusBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                int radius = i + 1;
+                radiusValue.setText("Search Radius: " + radius + "km");
+                storedSettings.setRadius(radius);
+                if (userCircle != null) {
+                    userCircle.setRadius(radius * 1000);
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+    }
+
+    public void initializeUserLocation() {
+        if (ContextCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(getActivity(), new String[] {
+                    android.Manifest.permission.ACCESS_FINE_LOCATION
+            }, MY_PERMISSIONS_ACCESS_LOCATION_FINE );
+        } else {
+            locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+            LocationListener locationListener = new LocationListener() {
+                public void onLocationChanged(Location location) {
+                    map.clear();
+
+                    LatLng myLatLng = new LatLng(location.getLatitude(), location.getLongitude());
+                    Log.v(TAG, "Location: " + myLatLng.toString());
+                    map.addMarker(new MarkerOptions().position(myLatLng).title("Your Location"));
+
+                    CameraPosition cameraPosition = new CameraPosition.Builder().target(myLatLng).zoom(DEFAULT_ZOOM).build();
+                    map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+
+                    CircleOptions circleOptions = new CircleOptions().center(myLatLng).radius(storedSettings.getRadius() * 1000);
+                    userCircle = map.addCircle(circleOptions);
+                    Log.v(TAG, location.toString());
+                }
+                public void onStatusChanged(String provider, int status, Bundle extras) {}
+                public void onProviderEnabled(String provider) {}
+                public void onProviderDisabled(String provider) {}
+            };
+
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+        }
+    }
+
+    public void initializeMap(View view, Bundle savedInstanceState) {
         mapView = (MapView) view.findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
 
@@ -52,43 +127,19 @@ public class SettingsActivity extends Fragment {
             @Override
             public void onMapReady(GoogleMap gMap) {
                 map = gMap;
-
-                // For dropping a marker at a point on the Map
-                LatLng sydney = new LatLng(-34, 151);
-                map.addMarker(new MarkerOptions().position(sydney).title("Your Location"));
-
-                // For zooming automatically to the location of the marker
-                CameraPosition cameraPosition = new CameraPosition.Builder().target(sydney).zoom(12).build();
-                map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-
-                CircleOptions circleOptions = new CircleOptions().center(new LatLng(-34, 151)).radius(storedSettings.getRadius());
-                userCircle = map.addCircle(circleOptions);
+                initializeUserLocation();
             }
         });
+    }
 
-        radiusBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                int radius = i + 1;
-                radiusValue.setText("Search Radius: " + radius + "km");
-                storedSettings.setRadius(radius);
-                if (userCircle != null) {
-                    userCircle.setRadius(radius);
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_ACCESS_LOCATION_FINE:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    initializeUserLocation();
                 }
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
-
-        return view;
+        }
     }
 
     @Override
@@ -119,4 +170,5 @@ public class SettingsActivity extends Fragment {
         super.onLowMemory();
         mapView.onLowMemory();
     }
+
 }
