@@ -1,6 +1,12 @@
 package edu.tufts.cs.twocents;
 
 import android.content.Context;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.os.AsyncTask;
+import android.os.Bundle;
+
 import android.util.Log;
 
 import com.android.volley.Request;
@@ -8,17 +14,20 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 
+
 import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.google.android.gms.analytics.internal.zzy.w;
+import static edu.tufts.cs.twocents.ApiMethods.CREATE_NEW_USER;
 
 
 /**
  * Created by toby on 10/27/16.
  * Api Handler
  */
-
 
 
 public class ApiHandler implements Requestable {
@@ -28,6 +37,9 @@ public class ApiHandler implements Requestable {
     private final Context context;
     private final User user;
     private final StoredSettings storedSettings;
+    private Location currentLocation;
+    private LocationManager locationManager;
+
 
     public ApiHandler(Context context) {
         this.context = context;
@@ -35,9 +47,7 @@ public class ApiHandler implements Requestable {
         this.storedSettings = new StoredSettings(context);
     }
 
-
-    public void makeRequest(ApiMethods apiMethod, Map<String, String> params, Map<String, String> urlParams) {
-
+    private void makeRequestHelper(ApiMethods apiMethod, Map<String, String> params, Map<String, String> urlParams) {
         String url = BASE_URL;
         JSONObject postParams = null;
         int method = Request.Method.GET;
@@ -46,8 +56,9 @@ public class ApiHandler implements Requestable {
             if (params == null) {
                 params = new HashMap<>();
             }
-            params.put("lat", Double.toString(storedSettings.getMostRecentLat()));
-            params.put("lng", Double.toString(storedSettings.getMostRecentLng()));
+
+            params.put("lat", Double.toString(currentLocation.getLatitude()));
+            params.put("lng", Double.toString(currentLocation.getLongitude()));
             params.put("radius", Integer.toString(storedSettings.getRadius()));
         }
 
@@ -98,6 +109,40 @@ public class ApiHandler implements Requestable {
 
         RequestSingleton.getInstance(this.context).addToRequestQueue(request);
     }
+
+    public void makeRequest(final ApiMethods apiMethod, final Map<String, String> params, final Map<String, String> urlParams) {
+        if (currentLocation == null) {
+            LocationListener locationListener = new LocationListener() {
+                public void onLocationChanged(Location location) {
+                    Log.v(TAG, location + " <- New location");
+                    currentLocation = location;
+                    makeRequestHelper(apiMethod, params, urlParams);
+                }
+
+                public void onStatusChanged(String provider, int status, Bundle extras) {
+                }
+
+                public void onProviderEnabled(String provider) {
+                }
+
+                public void onProviderDisabled(String provider) {
+                }
+            };
+            try {
+                locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+
+            } catch (SecurityException e) {
+                Log.v(TAG, "Security exception!  Location permission not granted");
+            } catch (Exception e) {
+                Log.v(TAG, "Generic exception!" + e.getMessage());
+            }
+        } else {
+            makeRequestHelper(apiMethod, params, urlParams);
+        }
+    }
+
 
     public void onCompleted(JSONObject response) {}
 

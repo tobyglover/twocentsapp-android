@@ -51,7 +51,7 @@ public class ListPollsFragment extends Fragment {
     }
 
     private void fetchPolls() {
-        ApiHandler apiHandler = new ApiHandler(getContext().getApplicationContext()) {
+        ApiHandler apiHandler = new ApiHandler(getContext()) {
             @Override
             public void onCompleted(JSONObject response) {
                 Log.v(TAG, response.toString());
