@@ -112,6 +112,7 @@ public class SettingsActivity extends Fragment {
         mapView.onCreate(savedInstanceState);
 
         mapView.onResume();
+        //
 
         try {
             MapsInitializer.initialize(getContext().getApplicationContext());

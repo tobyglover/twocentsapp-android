@@ -46,8 +46,8 @@ public class ApiHandler implements Requestable {
             if (params == null) {
                 params = new HashMap<>();
             }
-            params.put("lat", "-5"); // need to make this real values
-            params.put("lng", "-5");
+            params.put("lat", Double.toString(storedSettings.getMostRecentLat()));
+            params.put("lng", Double.toString(storedSettings.getMostRecentLng()));
             params.put("radius", Integer.toString(storedSettings.getRadius()));
         }
 
