@@ -4,7 +4,6 @@ import android.content.Context;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.os.AsyncTask;
 import android.os.Bundle;
 
 import android.util.Log;
@@ -19,10 +18,6 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import static com.google.android.gms.analytics.internal.zzy.w;
-import static edu.tufts.cs.twocents.ApiMethods.CREATE_NEW_USER;
-
 
 /**
  * Created by toby on 10/27/16.
@@ -52,7 +47,7 @@ public class ApiHandler implements Requestable {
         JSONObject postParams = null;
         int method = Request.Method.GET;
 
-        if (apiMethod == ApiMethods.GET_POLLS || apiMethod == ApiMethods.GET_POLLS_FOR_USER || apiMethod == ApiMethods.CREATE_NEW_POLL) {
+        if (isLocationRequired(apiMethod)) {
             if (params == null) {
                 params = new HashMap<>();
             }
@@ -111,7 +106,7 @@ public class ApiHandler implements Requestable {
     }
 
     public void makeRequest(final ApiMethods apiMethod, final Map<String, String> params, final Map<String, String> urlParams) {
-        if (currentLocation == null) {
+        if (currentLocation == null && isLocationRequired(apiMethod)) {
             LocationListener locationListener = new LocationListener() {
                 public void onLocationChanged(Location location) {
                     Log.v(TAG, location + " <- New location");
@@ -141,6 +136,10 @@ public class ApiHandler implements Requestable {
         } else {
             makeRequestHelper(apiMethod, params, urlParams);
         }
+    }
+
+    private Boolean isLocationRequired(ApiMethods method) {
+        return method == ApiMethods.GET_POLLS || method == ApiMethods.GET_POLLS_FOR_USER || method == ApiMethods.CREATE_NEW_POLL;
     }
 
 
