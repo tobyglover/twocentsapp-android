@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">TwoCents</string>
+    <string name="title_activity_post_new_poll">PostNewPollActivity</string>
+    <string name="title_activity_create_user">CreateUserActivity</string>
+    <string name="welcome_message">Welcome to TwoCents!</string>
+    <string name="create_account">Create Account</string>
+    <string name="username_input_label">Username</string>
+    <string name="welcome_go_button_label">Let\'s Go!</string>
+    <string name="welcome_username_optional_label">(Totally optional, but you can set one if you want)</string>
+    <string name="new_poll_label">New Poll</string>
+    <string name="new_poll_cancel_label">Cancel</string>
+    <string name="new_poll_send_label">Send</string>
+    <string name="settings_radius_label">Radius</string>
+    <string name="new_poll_text_hint">New Poll Text</string>
+    <string name="send_message_hint">Send Message</string>
+</resources>
