@@ -8,6 +8,7 @@ import android.os.Bundle;
 
 import android.util.Log;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -18,6 +19,11 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.google.android.gms.analytics.internal.zzy.n;
+import static com.google.android.gms.analytics.internal.zzy.p;
+import static com.google.android.gms.analytics.internal.zzy.w;
+import static edu.tufts.cs.twocents.ApiMethods.CREATE_NEW_USER;
 
 /**
  * Created by toby on 10/27/16.
@@ -32,9 +38,6 @@ public class ApiHandler implements Requestable {
     private final Context context;
     private final User user;
     private final StoredSettings storedSettings;
-    private Location currentLocation;
-    private LocationManager locationManager;
-
 
     public ApiHandler(Context context) {
         this.context = context;
@@ -42,19 +45,30 @@ public class ApiHandler implements Requestable {
         this.storedSettings = new StoredSettings(context);
     }
 
-    private void makeRequestHelper(ApiMethods apiMethod, Map<String, String> params, Map<String, String> urlParams) {
+    public void makeRequest(ApiMethods apiMethod, Map<String, String> params, Map<String, String> urlParams) {
         String url = BASE_URL;
         JSONObject postParams = null;
         int method = Request.Method.GET;
+        DefaultRetryPolicy retryPolicy = new DefaultRetryPolicy();
 
         if (isLocationRequired(apiMethod)) {
             if (params == null) {
                 params = new HashMap<>();
             }
 
-            params.put("lat", Double.toString(currentLocation.getLatitude()));
-            params.put("lng", Double.toString(currentLocation.getLongitude()));
-            params.put("radius", Integer.toString(storedSettings.getRadius()));
+
+            if (!storedSettings.hasLocation()) {
+                // not ready yet
+                return;
+            }
+
+            double latitude = storedSettings.getMostRecentLat();
+            double longitude = storedSettings.getMostRecentLng();
+            int radius = storedSettings.getRadius();
+
+            params.put("lat", Double.toString(latitude));
+            params.put("lng", Double.toString(longitude));
+            params.put("radius", Integer.toString(radius));
         }
 
         switch (apiMethod) {
@@ -68,6 +82,7 @@ public class ApiHandler implements Requestable {
                 method = Request.Method.POST;
                 postParams = new JSONObject(params);
                 url += "createNewPoll/" + this.user.getUserKey() + "/";
+                retryPolicy = new DefaultRetryPolicy(0, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
                 break;
             case VOTE_ON_POLL:
                 url += "voteOnPoll/" + this.user.getUserKey() + "/" + urlParams.get("pollId") + "/" + urlParams.get("optionId") + "/";
@@ -78,7 +93,8 @@ public class ApiHandler implements Requestable {
             case GET_POLLS_FOR_USER:
                 url += "getPollsForUser/" + this.user.getUserKey() + "/";
                 break;
-
+            default:
+                return;
         }
 
         // getParams() is overridden by JsonObjectRequest, can't use it
@@ -92,6 +108,7 @@ public class ApiHandler implements Requestable {
         JsonObjectRequest request = new JsonObjectRequest(method, url, postParams, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
+                //Log.v(TAG, "Received response:\n" + response.toString());
                 onCompleted(response);
             }
         }, new Response.ErrorListener() {
@@ -102,46 +119,19 @@ public class ApiHandler implements Requestable {
             }
         });
 
+        request.setRetryPolicy(retryPolicy);
+
         RequestSingleton.getInstance(this.context).addToRequestQueue(request);
-    }
 
-    public void makeRequest(final ApiMethods apiMethod, final Map<String, String> params, final Map<String, String> urlParams) {
-        if (currentLocation == null && isLocationRequired(apiMethod)) {
-            LocationListener locationListener = new LocationListener() {
-                public void onLocationChanged(Location location) {
-                    Log.v(TAG, location + " <- New location");
-                    currentLocation = location;
-                    makeRequestHelper(apiMethod, params, urlParams);
-                }
-
-                public void onStatusChanged(String provider, int status, Bundle extras) {
-                }
-
-                public void onProviderEnabled(String provider) {
-                }
-
-                public void onProviderDisabled(String provider) {
-                }
-            };
-            try {
-                locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
-                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
-
-            } catch (SecurityException e) {
-                Log.v(TAG, "Security exception!  Location permission not granted");
-            } catch (Exception e) {
-                Log.v(TAG, "Generic exception!" + e.getMessage());
-            }
-        } else {
-            makeRequestHelper(apiMethod, params, urlParams);
+        if (postParams != null) {
+            //Log.v(TAG, "ApiMethodNum: " + apiMethod.getName() + "\nUrl: " + url + "\nPost Params: " + postParams.toString());
+    
         }
     }
 
     private Boolean isLocationRequired(ApiMethods method) {
-        return method == ApiMethods.GET_POLLS || method == ApiMethods.GET_POLLS_FOR_USER || method == ApiMethods.CREATE_NEW_POLL;
+        return method == ApiMethods.GET_POLLS || method == ApiMethods.CREATE_NEW_POLL;
     }
-
 
     public void onCompleted(JSONObject response) {}
 

@@ -27,8 +27,10 @@ import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class SettingsActivity extends Fragment {
-    private static final String TAG = "SettingsActivity";
+import static java.security.AccessController.getContext;
+
+public class SettingsFragment extends UpdatableFragment {
+    private static final String TAG = "SettingsFragment";
     private static final int DEFAULT_ZOOM = 10;
 
     private GoogleMap map;
@@ -49,6 +51,8 @@ public class SettingsActivity extends Fragment {
 
         initializeRadius(view);
         initializeMap(view, savedInstanceState);
+
+        fragmentName = TAG;
 
         return view;
     }
@@ -87,7 +91,7 @@ public class SettingsActivity extends Fragment {
                     storedSettings.setMostRecentLocation(location);
 
                     LatLng myLatLng = new LatLng(location.getLatitude(), location.getLongitude());
-                    Log.v(TAG, "Location: " + myLatLng.toString());
+                    //Log.v(TAG, "Location: " + myLatLng.toString());
 
                     map.clear();
                     map.addMarker(new MarkerOptions().position(myLatLng).title("I'm here!"));
@@ -125,7 +129,7 @@ public class SettingsActivity extends Fragment {
             public void onMapReady(GoogleMap gMap) {
                 map = gMap;
                 LatLng myLatLng = new LatLng(storedSettings.getMostRecentLat(), storedSettings.getMostRecentLng());
-                Log.v(TAG, "Saved Location: " + myLatLng.toString());
+                //Log.v(TAG, "Saved Location: " + myLatLng.toString());
 
                 map.clear();
                 map.addMarker(new MarkerOptions().position(myLatLng).title("I'm here!"));
@@ -177,6 +181,12 @@ public class SettingsActivity extends Fragment {
     public void onLowMemory() {
         super.onLowMemory();
         mapView.onLowMemory();
+    }
+
+    @Override
+    public void onLocationUpdate() {
+        //Does nothing
+        //TODO Update map?
     }
 
 }
