@@ -50,7 +50,7 @@ public class ListPollsFragment extends UpdatableFragment {
                 startActivity(intent);
             }
         });
-        //fetchPolls();
+        fetchPolls();
     }
 
     private void fetchPolls() {

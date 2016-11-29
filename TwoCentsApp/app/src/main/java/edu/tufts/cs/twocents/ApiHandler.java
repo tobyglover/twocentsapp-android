@@ -58,13 +58,14 @@ public class ApiHandler implements Requestable {
                 params = new HashMap<>();
             }
 
-            double latitude = storedSettings.getMostRecentLat();
-            double longitude = storedSettings.getMostRecentLng();
-            if (latitude == storedSettings.LOCATION_LAT_DEFAULT || longitude == storedSettings.LOCATION_LNG_DEFAULT) {
+
+            if (!storedSettings.hasLocation()) {
                 // not ready yet
                 return;
             }
 
+            double latitude = storedSettings.getMostRecentLat();
+            double longitude = storedSettings.getMostRecentLng();
             int radius = storedSettings.getRadius();
 
             params.put("lat", Double.toString(latitude));

@@ -3,6 +3,7 @@ package edu.tufts.cs.twocents;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.location.Location;
+import android.util.Log;
 
 /**
  * Created by toby on 10/30/16.
@@ -10,6 +11,7 @@ import android.location.Location;
  */
 
 class StoredSettings {
+    private static final String TAG = "StoredSettings";
     private static final String FILE_PREF_NAME = "Settings";
 
     private static final String RADIUS_PREF = "Radius";
@@ -49,6 +51,15 @@ class StoredSettings {
         editor.putFloat(LOCATION_LAT_PREF, (float) l.getLatitude());
         editor.putFloat(LOCATION_LNG_PREF, (float) l.getLongitude());
         editor.apply();
+    }
+
+    public boolean hasLocation() {
+        double latitude = getMostRecentLat();
+        double longitude = getMostRecentLng();
+
+        Log.v(TAG, "Stored location:\n Lat: " + latitude + "\nLng: " + longitude);
+
+        return latitude != LOCATION_LAT_DEFAULT && longitude != LOCATION_LNG_DEFAULT;
     }
 
     public void clearLocation() {
