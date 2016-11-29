@@ -66,26 +66,26 @@ public class MainActivity extends AppCompatActivity {
         } else {
             locationListener = new LocationListener() {
                 public void onLocationChanged(Location location) {
-                    Log.v(TAG, "Location changed " + location.toString());
+                    //Log.v(TAG, "Location changed " + location.toString());
                     storedSettings.setMostRecentLocation(location);
                     if (viewPager != null) {
                         UpdatableFragment currentFragment = adapter.getItem(viewPager.getCurrentItem());
                         if (currentFragment == null) {
-                            Log.v(TAG, "Current fragment is null");
+                            //Log.v(TAG, "Current fragment is null");
                         } else if (currentFragment.getContext() == null) {
-                            Log.v(TAG, "Current fragment context is null");
+                            //Log.v(TAG, "Current fragment context is null");
                         } else {
                             currentFragment.onLocationUpdate();
                         }
-                        Log.v(TAG, "Fragment Name: " + currentFragment.fragmentName);
+                        //Log.v(TAG, "Fragment Name: " + currentFragment.fragmentName);
                     } else {
-                        Log.v(TAG, "View pager is null");
+                        //Log.v(TAG, "View pager is null");
                     }
 
                     double latitude = storedSettings.getMostRecentLat();
                     double longitude = storedSettings.getMostRecentLng();
 
-                    Log.v(TAG, "Stored location:\n Lat: " + latitude + "\nLng: " + longitude);
+                    //Log.v(TAG, "Stored location:\n Lat: " + latitude + "\nLng: " + longitude);
                 }
 
                 public void onStatusChanged(String provider, int status, Bundle extras) {
@@ -159,14 +159,14 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
 
         try {
-            Log.v(TAG, "Called onResume");
+            //Log.v(TAG, "Called onResume");
             LocationManager locationManager = (LocationManager) this.getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
             //locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
         } catch (SecurityException e) {
-            Log.v(TAG, "Security exception!  Location permission not granted");
+            //Log.v(TAG, "Security exception!  Location permission not granted");
         } catch (Exception e) {
-            Log.v(TAG, "Generic exception!" + e.getMessage());
+            //Log.v(TAG, "Generic exception!" + e.getMessage());
         }
     }
 }

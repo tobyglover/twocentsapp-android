@@ -35,7 +35,7 @@ class Poll {
             numSecondsCreatedAgo = poll.getInt("createdAgo");
 
         } catch (JSONException e) {
-            Log.v(TAG, "Couldn't parse JSON");
+            //Log.v(TAG, "Couldn't parse JSON");
         }
     }
 

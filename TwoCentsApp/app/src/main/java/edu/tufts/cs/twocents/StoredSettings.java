@@ -57,7 +57,7 @@ class StoredSettings {
         double latitude = getMostRecentLat();
         double longitude = getMostRecentLng();
 
-        Log.v(TAG, "Stored location:\n Lat: " + latitude + "\nLng: " + longitude);
+        //Log.v(TAG, "Stored location:\n Lat: " + latitude + "\nLng: " + longitude);
 
         return latitude != LOCATION_LAT_DEFAULT && longitude != LOCATION_LNG_DEFAULT;
     }

@@ -110,7 +110,7 @@ public class ApiHandler implements Requestable {
         JsonObjectRequest request = new JsonObjectRequest(method, url, postParams, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                Log.v(TAG, "Received response:\n" + response.toString());
+                //Log.v(TAG, "Received response:\n" + response.toString());
                 onCompleted(response);
             }
         }, new Response.ErrorListener() {
@@ -126,9 +126,9 @@ public class ApiHandler implements Requestable {
         RequestSingleton.getInstance(this.context).addToRequestQueue(request);
 
         if (postParams != null) {
-            Log.v(TAG, "ApiMethodNum: " + apiMethod.getName() + "\nUrl: " + url + "\nPost Params: " + postParams.toString());
+            //Log.v(TAG, "ApiMethodNum: " + apiMethod.getName() + "\nUrl: " + url + "\nPost Params: " + postParams.toString());
         } else {
-            Log.v(TAG, "ApiMethodNum: " + apiMethod.getName() + "\nUrl: " + url);
+            //Log.v(TAG, "ApiMethodNum: " + apiMethod.getName() + "\nUrl: " + url);
         }
 
     }

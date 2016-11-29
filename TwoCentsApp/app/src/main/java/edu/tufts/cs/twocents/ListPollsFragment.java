@@ -33,13 +33,13 @@ public class ListPollsFragment extends UpdatableFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         fragmentName = TAG;
-        Log.v(TAG, "Just set fragment Name: " + fragmentName);
+        //Log.v(TAG, "Just set fragment Name: " + fragmentName);
         return inflater.inflate(R.layout.activity_all, container, false);
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        Log.v(TAG, "onViewCreated running in ListPollsFragment");
+        //Log.v(TAG, "onViewCreated running in ListPollsFragment");
         polls = new ArrayList<>();
         pollListView = (ListView) view.findViewById(R.id.poll_list_view);
         FloatingActionButton newPollButton = (FloatingActionButton) view.findViewById(R.id.new_post_button);
@@ -57,7 +57,7 @@ public class ListPollsFragment extends UpdatableFragment {
         ApiHandler apiHandler = new ApiHandler(getContext()) {
             @Override
             public void onCompleted(JSONObject response) {
-                Log.v(TAG, response.toString());
+                //Log.v(TAG, response.toString());
                 displayPolls(response);
             }
         };
@@ -77,20 +77,20 @@ public class ListPollsFragment extends UpdatableFragment {
                 polls.add(new Poll(pollArray.getJSONObject(i)));
             }
             if (getView() == null) {
-                Log.v(TAG, "View is NULL?");
+                //Log.v(TAG, "View is NULL?");
             }
             PollArrayAdapter adapter = new PollArrayAdapter(getView().getContext(), R.id.poll_list_view, polls);
             pollListView.setAdapter(adapter);
 
         } catch (JSONException e) {
-            Log.v(TAG, e.getMessage());
+            //Log.v(TAG, e.getMessage());
         }
 
     }
 
     @Override
     public void onLocationUpdate() {
-        Log.v(TAG, "Location updated in ListPollsFragment");
+        //Log.v(TAG, "Location updated in ListPollsFragment");
         fetchPolls();
     }
 }

@@ -54,7 +54,7 @@ public class PostNewPollActivity extends AppCompatActivity {
             ApiHandler apiHandler = new ApiHandler(getApplicationContext()) {
                 @Override
                 public void onCompleted(JSONObject response) {
-                    Log.v(TAG, response.toString());
+                    //Log.v(TAG, response.toString());
                     progress.dismiss();
                     close();
                 }
@@ -91,13 +91,13 @@ public class PostNewPollActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        Log.v(TAG, "--- Activity Paused ---");
+        //Log.v(TAG, "--- Activity Paused ---");
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        Log.v(TAG, "--- Activity Stopped ---");
+        //Log.v(TAG, "--- Activity Stopped ---");
     }
 
 

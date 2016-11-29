@@ -104,12 +104,12 @@ class PollArrayAdapter extends ArrayAdapter<Poll> {
                     currentVoteCount += voteCount;
 
                 } catch (JSONException e) {
-                    Log.v(TAG, "Couldn't find vote count");
+                    //Log.v(TAG, "Couldn't find vote count");
                 }
             }
             return convertView;
         } else {
-            Log.v(TAG, "Poll is NULL");
+            //Log.v(TAG, "Poll is NULL");
         }
 
         return convertView;

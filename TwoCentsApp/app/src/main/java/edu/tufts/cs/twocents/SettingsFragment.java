@@ -91,7 +91,7 @@ public class SettingsFragment extends UpdatableFragment {
                     storedSettings.setMostRecentLocation(location);
 
                     LatLng myLatLng = new LatLng(location.getLatitude(), location.getLongitude());
-                    Log.v(TAG, "Location: " + myLatLng.toString());
+                    //Log.v(TAG, "Location: " + myLatLng.toString());
 
                     map.clear();
                     map.addMarker(new MarkerOptions().position(myLatLng).title("I'm here!"));
@@ -129,7 +129,7 @@ public class SettingsFragment extends UpdatableFragment {
             public void onMapReady(GoogleMap gMap) {
                 map = gMap;
                 LatLng myLatLng = new LatLng(storedSettings.getMostRecentLat(), storedSettings.getMostRecentLng());
-                Log.v(TAG, "Saved Location: " + myLatLng.toString());
+                //Log.v(TAG, "Saved Location: " + myLatLng.toString());
 
                 map.clear();
                 map.addMarker(new MarkerOptions().position(myLatLng).title("I'm here!"));
