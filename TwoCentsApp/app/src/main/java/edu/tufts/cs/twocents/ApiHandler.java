@@ -4,7 +4,6 @@ import android.content.Context;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.os.AsyncTask;
 import android.os.Bundle;
 
 import android.util.Log;
@@ -25,7 +24,6 @@ import static com.google.android.gms.analytics.internal.zzy.n;
 import static com.google.android.gms.analytics.internal.zzy.p;
 import static com.google.android.gms.analytics.internal.zzy.w;
 import static edu.tufts.cs.twocents.ApiMethods.CREATE_NEW_USER;
-
 
 /**
  * Created by toby on 10/27/16.
@@ -53,7 +51,7 @@ public class ApiHandler implements Requestable {
         int method = Request.Method.GET;
         DefaultRetryPolicy retryPolicy = new DefaultRetryPolicy();
 
-        if (apiMethod == ApiMethods.GET_POLLS || apiMethod == ApiMethods.GET_POLLS_FOR_USER || apiMethod == ApiMethods.CREATE_NEW_POLL) {
+        if (isLocationRequired(apiMethod)) {
             if (params == null) {
                 params = new HashMap<>();
             }
@@ -127,10 +125,12 @@ public class ApiHandler implements Requestable {
 
         if (postParams != null) {
             //Log.v(TAG, "ApiMethodNum: " + apiMethod.getName() + "\nUrl: " + url + "\nPost Params: " + postParams.toString());
-        } else {
-            //Log.v(TAG, "ApiMethodNum: " + apiMethod.getName() + "\nUrl: " + url);
+    
         }
+    }
 
+    private Boolean isLocationRequired(ApiMethods method) {
+        return method == ApiMethods.GET_POLLS || method == ApiMethods.CREATE_NEW_POLL;
     }
 
     public void onCompleted(JSONObject response) {}

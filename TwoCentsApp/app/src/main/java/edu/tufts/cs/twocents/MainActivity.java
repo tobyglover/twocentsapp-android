@@ -51,6 +51,13 @@ public class MainActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        User user = new User(getApplicationContext());
+        if (!user.isUserKeySet()) {
+            Intent intent = new Intent(this, CreateUserActivity.class);
+            startActivity(intent);
+        }
+
         setupTabs();
 
         storedSettings = new StoredSettings(this.getApplicationContext());
@@ -145,12 +152,6 @@ public class MainActivity extends AppCompatActivity {
 
                 }
             });
-
-            User user = new User(getApplicationContext());
-            if (!user.isUserKeySet()) {
-                Intent intent = new Intent(this, CreateUserActivity.class);
-                startActivity(intent);
-            }
         }
     }
 
