@@ -61,7 +61,20 @@ public class PostNewPollActivity extends AppCompatActivity {
     }
 
     private void close() {
-        super.onBackPressed();
+        super.finish();
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.v(TAG, "--- Activity Paused ---");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.v(TAG, "--- Activity Stopped ---");
+    }
+
 
 }

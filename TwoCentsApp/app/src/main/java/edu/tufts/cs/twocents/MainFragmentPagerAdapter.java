@@ -16,7 +16,7 @@ class MainFragmentPagerAdapter extends FragmentPagerAdapter {
     }
 
     @Override
-    public Fragment getItem(int position) {
+    public UpdatableFragment getItem(int position) {
         switch (position) {
             case 0:
                 ListPollsFragment allPollsFragment = new ListPollsFragment();
@@ -27,7 +27,7 @@ class MainFragmentPagerAdapter extends FragmentPagerAdapter {
                 userPollsFragment.setType(ListPollsFragment.ListPollType.USER);
                 return userPollsFragment;
             case 2:
-                return new SettingsActivity();
+                return new SettingsFragment();
         }
         return null;
     }
@@ -36,7 +36,6 @@ class MainFragmentPagerAdapter extends FragmentPagerAdapter {
     public int getCount() {
         return 3;
     }
-
 
 
 }

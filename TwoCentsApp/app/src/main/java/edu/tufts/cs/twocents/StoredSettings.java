@@ -17,8 +17,8 @@ class StoredSettings {
 
     private static final String LOCATION_LAT_PREF = "LocationLat";
     private static final String LOCATION_LNG_PREF = "LocationLng";
-    private static final float LOCATION_LAT_DEFAULT = 0;
-    private static final float LOCATION_LNG_DEFAULT = 0;
+    public static final float LOCATION_LAT_DEFAULT = 270;
+    public static final float LOCATION_LNG_DEFAULT = 270;
 
     private final SharedPreferences sharedPrefs;
 
@@ -48,6 +48,13 @@ class StoredSettings {
         SharedPreferences.Editor editor = this.sharedPrefs.edit();
         editor.putFloat(LOCATION_LAT_PREF, (float) l.getLatitude());
         editor.putFloat(LOCATION_LNG_PREF, (float) l.getLongitude());
+        editor.apply();
+    }
+
+    public void clearLocation() {
+        SharedPreferences.Editor editor = this.sharedPrefs.edit();
+        editor.remove(LOCATION_LAT_PREF);
+        editor.remove(LOCATION_LNG_PREF);
         editor.apply();
     }
 }

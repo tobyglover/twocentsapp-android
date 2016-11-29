@@ -17,7 +17,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 
-public class ListPollsFragment extends Fragment {
+public class ListPollsFragment extends UpdatableFragment {
     private static final String TAG = "ListPollsFragment";
 
     public enum ListPollType {ALL, USER}
@@ -32,14 +32,17 @@ public class ListPollsFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        fragmentName = TAG;
+        Log.v(TAG, "Just set fragment Name: " + fragmentName);
         return inflater.inflate(R.layout.activity_all, container, false);
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+        Log.v(TAG, "onViewCreated running in ListPollsFragment");
         polls = new ArrayList<>();
-        pollListView = (ListView) getView().findViewById(R.id.poll_list_view);
-        FloatingActionButton newPollButton = (FloatingActionButton) getView().findViewById(R.id.new_post_button);
+        pollListView = (ListView) view.findViewById(R.id.poll_list_view);
+        FloatingActionButton newPollButton = (FloatingActionButton) view.findViewById(R.id.new_post_button);
         newPollButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -47,7 +50,7 @@ public class ListPollsFragment extends Fragment {
                 startActivity(intent);
             }
         });
-        fetchPolls();
+        //fetchPolls();
     }
 
     private void fetchPolls() {
@@ -73,6 +76,9 @@ public class ListPollsFragment extends Fragment {
             for (int i = 0; i < pollArray.length(); i++) {
                 polls.add(new Poll(pollArray.getJSONObject(i)));
             }
+            if (getView() == null) {
+                Log.v(TAG, "View is NULL?");
+            }
             PollArrayAdapter adapter = new PollArrayAdapter(getView().getContext(), R.id.poll_list_view, polls);
             pollListView.setAdapter(adapter);
 
@@ -80,5 +86,11 @@ public class ListPollsFragment extends Fragment {
             Log.v(TAG, e.getMessage());
         }
 
+    }
+
+    @Override
+    public void onLocationUpdate() {
+        Log.v(TAG, "Location updated in ListPollsFragment");
+        fetchPolls();
     }
 }
