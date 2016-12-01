@@ -1,11 +1,6 @@
 package edu.tufts.cs.twocents;
 
 import android.content.Context;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.os.Bundle;
-
 import android.util.Log;
 
 import com.android.volley.DefaultRetryPolicy;
@@ -15,8 +10,10 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -108,14 +105,24 @@ public class ApiHandler implements Requestable {
         JsonObjectRequest request = new JsonObjectRequest(method, url, postParams, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                //Log.v(TAG, "Received response:\n" + response.toString());
+                Log.v(TAG, "Received response:\n" + response.toString());
                 onCompleted(response);
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e(TAG, error.toString());
-                onError();
+                if(error.networkResponse.data!=null) {
+                    try {
+                        String body = new String(error.networkResponse.data, "UTF-8");
+                        onError(new JSONObject(body));
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    onError();
+                }
             }
         });
 
@@ -135,6 +142,11 @@ public class ApiHandler implements Requestable {
 
     public void onCompleted(JSONObject response) {}
 
-    public void onError() {}
+    @Override
+    public void onError() {
+
+    }
+
+    public void onError(JSONObject errorResponse) {}
 
 }
