@@ -2,6 +2,7 @@ package edu.tufts.cs.twocents;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 /**
  * Created by toby on 10/28/16.
@@ -9,6 +10,7 @@ import android.content.SharedPreferences;
  */
 
 class User {
+    private static final String TAG = "User";
     private static final String PREF_NAME = "UserKey";
     private final SharedPreferences sharedPrefs;
 

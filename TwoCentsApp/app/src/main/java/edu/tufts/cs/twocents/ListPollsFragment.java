@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +24,7 @@ public class ListPollsFragment extends UpdatableFragment {
     public enum ListPollType {ALL, USER}
 
     private ListView pollListView;
+    private SwipeRefreshLayout swipeRefreshLayout;
     private ArrayList<Poll> polls;
     private ListPollType type;
 
@@ -42,6 +44,8 @@ public class ListPollsFragment extends UpdatableFragment {
         //Log.v(TAG, "onViewCreated running in ListPollsFragment");
         polls = new ArrayList<>();
         pollListView = (ListView) view.findViewById(R.id.poll_list_view);
+        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swiperefresh);
+
         FloatingActionButton newPollButton = (FloatingActionButton) view.findViewById(R.id.new_post_button);
         newPollButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -50,15 +54,28 @@ public class ListPollsFragment extends UpdatableFragment {
                 startActivity(intent);
             }
         });
+
+        swipeRefreshLayout.setOnRefreshListener(
+            new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+                    Log.v(TAG, "onRefresh called from SwipeRefreshLayout");
+                    fetchPolls();
+                }
+            }
+        );
+
         fetchPolls();
     }
 
     private void fetchPolls() {
+        swipeRefreshLayout.setRefreshing(true);
         ApiHandler apiHandler = new ApiHandler(getContext()) {
             @Override
             public void onCompleted(JSONObject response) {
                 //Log.v(TAG, response.toString());
                 displayPolls(response);
+                swipeRefreshLayout.setRefreshing(false);
             }
         };
 
