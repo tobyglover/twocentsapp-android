@@ -105,7 +105,7 @@ public class ApiHandler implements Requestable {
         JsonObjectRequest request = new JsonObjectRequest(method, url, postParams, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                Log.v(TAG, "Received response:\n" + response.toString());
+                //Log.v(TAG, "Received response:\n" + response.toString());
                 onCompleted(response);
             }
         }, new Response.ErrorListener() {

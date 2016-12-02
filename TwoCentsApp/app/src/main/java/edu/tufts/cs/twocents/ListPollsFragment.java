@@ -59,7 +59,7 @@ public class ListPollsFragment extends UpdatableFragment {
             new SwipeRefreshLayout.OnRefreshListener() {
                 @Override
                 public void onRefresh() {
-                    Log.v(TAG, "onRefresh called from SwipeRefreshLayout");
+                    //Log.v(TAG, "onRefresh called from SwipeRefreshLayout");
                     fetchPolls();
                 }
             }

@@ -80,7 +80,7 @@ public class CreateUserActivity extends AppCompatActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                Log.v(TAG, errorResponse.toString());
+                //Log.v(TAG, errorResponse.toString());
             }
         };
 
