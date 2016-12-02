@@ -2,6 +2,7 @@ package edu.tufts.cs.twocents;
 
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -13,6 +14,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -113,7 +115,20 @@ public class MainActivity extends AppCompatActivity {
         switch (requestCode) {
             case MY_PERMISSIONS_ACCESS_LOCATION_FINE:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    setupLocationListener();
                     setupTabs();
+                } else if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_DENIED){
+                    AlertDialog.Builder alert = new AlertDialog.Builder(this);
+                    alert.setTitle("TwoCents requires location in order to be useful.");
+                    alert.setNeutralButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            setupLocationListener();
+                        }
+                    });
+                    alert.setView(findViewById(R.id.location_failed_text));
+                    alert.create().show();
                 }
         }
     }
